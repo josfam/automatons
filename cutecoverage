@@ -1,0 +1,39 @@
+#!/usr/bin/env python3
+
+"""Automates the creation and viewing of the html file created by `coverage` after running:
+`coverage run -m pytest ...`
+`coverage report`
+`coverage html`
+
+The script assumes that the file being tested is tested with pytest.
+"""
+
+import subprocess
+import os
+import argparse
+from pathlib import Path
+import webbrowser
+
+HTML_PARENTDIR = 'htmlcov'
+HTML_FILENAME = 'index.html'
+
+parser = argparse.ArgumentParser()
+parser.add_argument('f', help='Path to the file being tested')
+parser.add_argument('--clireport', action='store_true', help='Prints the coverage report to the cli')
+args = parser.parse_args()
+
+test_file_path = args.f
+show_cli_report = True if args.clireport else None
+
+current_dir = os.getcwd()
+
+# run coverage, optionally generate the report on the command-line, and generate the html file
+subprocess.run(['coverage', 'run', '-m', 'pytest', f'{test_file_path}'])
+
+if show_cli_report:
+    subprocess.run(['coverage', 'report'])
+
+subprocess.run(['coverage', 'html'])
+
+# open the html file in the default web browser
+webbrowser.open(f'file://{Path(current_dir) / Path(HTML_PARENTDIR) / Path(HTML_FILENAME)}')
