@@ -1,4 +1,4 @@
-# automatic
+# automatons
 A growing (🤞) collection of short (🤞) scripts that help me automate the boring stuff.
 
 ## Scripts summary
