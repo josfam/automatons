@@ -21,11 +21,11 @@ with open(zshrc_path, 'r', encoding='utf-8') as f:
     for i, line in enumerate(lines):
         if line.startswith('ZSH_THEME='):
             match = re.search(r'="(?P<theme>\w*)"', line)
-            old_theme = match.group('theme')
-            themes_to_swap.remove(old_theme)
+            current_theme = match.group('theme')
+            themes_to_swap.remove(current_theme)
             new_theme = ''.join(themes_to_swap)
 
-            # replace the old theme with the new theme
+            # replace the current theme with the new theme
             lines[i] = f'ZSH_THEME="{new_theme}"\n'
 
 # replace the contents of the .zshrc file
