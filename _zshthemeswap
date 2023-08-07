@@ -6,12 +6,23 @@ from pathlib import Path
 import os
 import subprocess
 import re
+import sys
 
 # edit this list to swap between two themes of your own
 themes_to_swap = ['bira', 'demo']
 
 # edit this line if your .zshrc file is in a different location
 zshrc_path = Path(os.getenv('HOME'), '.zshrc')
+zsh_themes_path = Path(os.getenv('HOME'), '.oh-my-zsh', 'themes')
+
+# verify that the provided themes exist in the themes location
+# default location checked is ~/.oh-my-zsh/themes
+for theme in themes_to_swap:
+    grep_command = f'ls -a {str(zsh_themes_path)} | grep {theme}'
+    legal_themes = subprocess.run(grep_command, capture_output=True, text=True, shell=True)
+    output = legal_themes.stdout
+    if not output:
+        sys.exit(f'{theme} is not a recognized theme.\nPlease check the spelling and try again.')
 
 # make a backup of the original .zshrc file
 subprocess.run(['cp', zshrc_path, str(zshrc_path) + '.pre-themeswap'])
