@@ -35,8 +35,13 @@ for i, line in enumerate(lines):
         continue
     match = re.search(r'="(?P<theme>\w*)"', line)
     current_theme = match.group('theme')
-    themes_to_swap.remove(current_theme)
-    new_theme = ''.join(themes_to_swap)
+
+    if current_theme not in themes_to_swap:
+        # make the first theme in the list the new theme
+        new_theme = themes_to_swap[0]
+    else:
+        themes_to_swap.remove(current_theme)
+        new_theme = ''.join(themes_to_swap)
 
     # replace the current theme with the new theme
     lines[i] = f'ZSH_THEME="{new_theme}"\n'
