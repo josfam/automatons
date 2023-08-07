@@ -40,8 +40,12 @@ for i, line in enumerate(lines):
         # make the first theme in the list the new theme
         new_theme = themes_to_swap[0]
     else:
-        themes_to_swap.remove(current_theme)
-        new_theme = ''.join(themes_to_swap)
+        # wrap around to the beginning, if the current theme is the last one
+        if themes_to_swap[-1] == current_theme:
+            new_theme = themes_to_swap[0]
+        else:
+            new_theme_index = themes_to_swap.index(current_theme) + 1
+            new_theme = themes_to_swap[new_theme_index]
 
     # replace the current theme with the new theme
     lines[i] = f'ZSH_THEME="{new_theme}"\n'
