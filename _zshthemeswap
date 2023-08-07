@@ -9,7 +9,7 @@ import re
 import sys
 
 # edit this list to swap between two themes of your own
-themes_to_swap = ['bira', 'demo']
+themes_to_swap = ['aussiegeek', 'bira', 'kardan']
 
 # edit this line if your .zshrc file is in a different location
 zshrc_path = Path(os.getenv('HOME'), '.zshrc')
