@@ -12,7 +12,7 @@ Automates the creation and viewing of the html file created by [coverage](https:
 \
 `coverage html`
 ### _zshthemeswap
-Toggles back and forth between two zshell themes.
+Switched between any number of specified zshell themes.
 \
 \
 I usually use a visually-heavy terminal theme (with lots of handy information) for everyday
