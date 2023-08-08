@@ -11,6 +11,9 @@ Automates the creation and viewing of the html file created by [coverage](https:
 `coverage report`
 \
 `coverage html`
+
+---
+
 ### _zshthemeswap
 Switch between any number of specified zshell themes.
 \
