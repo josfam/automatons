@@ -15,7 +15,7 @@ Automates the creation and viewing of the html file created by [coverage](https:
 ---
 
 ### _zshthemeswap
-Switch between any number of specified zshell themes.
+Switch between any number of specified [ohmyzsh](https://github.com/ohmyzsh/ohmyzsh) themes.
 \
 \
 I usually use a visually-heavy terminal theme (with lots of handy information) for everyday
