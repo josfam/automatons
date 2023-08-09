@@ -25,7 +25,8 @@ for theme in themes_to_swap:
         sys.exit(f'{theme} is not a recognized theme.\nPlease check the spelling and try again.')
 
 # make a backup of the original .zshrc file
-subprocess.run(['cp', zshrc_path, str(zshrc_path) + '.pre-themeswap'])
+if not Path.exists(Path(str(zshrc_path) + '.pre_zshthemeswap')):
+    subprocess.run(['cp', zshrc_path, str(zshrc_path) + '.pre_zshthemeswap'])
 
 with open(zshrc_path, 'r', encoding='utf-8') as f:
     lines = f.readlines()
