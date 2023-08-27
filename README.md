@@ -33,6 +33,8 @@ context, without having to:
 3. Source the `.zshrc` file
 4. Repeat steps 1-3 to change to the first theme
 
+---
+
 ### ,make
 Mimics how using `make` to compile C works in Harvard's CS50's Visual Studio Code codespace.
 \
