@@ -12,7 +12,7 @@ import os
 import sys
 
 if not len(sys.argv) >= 2:
-    sys.exit('usage: _make file')
+    sys.exit('usage: ,make file')
 
 if sys.argv[1].endswith('.c'):
     sys.exit("You shouldn't include the `.c` at the end of the file name.")
