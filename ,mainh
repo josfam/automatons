@@ -8,7 +8,7 @@ script_name = ',mainh'
 argvlen = len(sys.argv)
 
 if argvlen < 2 or argvlen > 3:
-    sys.exit(f"usages: \n,{script_name} new \n,{script_name} <prototype> <description>")
+    sys.exit(f"usages: \n{script_name} new \n{script_name} <prototype> <description>")
 
 # write the guards into the file
 if argvlen == 2:
