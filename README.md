@@ -3,7 +3,7 @@ A growing (🤞) collection of short (🤞) scripts that help me automate the bo
 
 ## Scripts summary
 
-### _cutecoverage 
+### ,cutecoverage 
 Automates the creation and viewing of the html file created by [coverage](https://coverage.readthedocs.io/) after running:
 \
 `coverage run -m pytest ...`
@@ -14,7 +14,7 @@ Automates the creation and viewing of the html file created by [coverage](https:
 
 ---
 
-### _zshthemeswap
+### ,zshthemeswap
 Switch between any number of specified [ohmyzsh](https://github.com/ohmyzsh/ohmyzsh) [themes](https://github.com/ohmyzsh/ohmyzsh/wiki/Themes).
 \
 \
