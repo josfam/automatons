@@ -19,18 +19,14 @@ def main():
 	# don't compile main.h
 	if file == "main.h":
 		# allow editing, and do a betty check afterwards
-		subprocess.run(f'vim main.h', shell=True)
-		print(f'{arrows} Running Betty on main.h ...')
-		subprocess.run(f'betty main.h', shell=True)
+		edit_run_betty(file)
 		print()
 		sys.exit()
 
 	# Run Betty on the file, and compile if it already exists
 	if os.path.exists(file):
 		# allow editing, and do a betty check afterwards
-		subprocess.run(f'vim {file}', shell=True)
-		print(f'{arrows} Running Betty on your code ...')
-		subprocess.run(f'betty {file}', shell=True)
+		edit_run_betty(file)
 		print()
 		print(f'{arrows} Compiling, and running your code with gcc ...')
 		print()
@@ -43,13 +39,9 @@ def main():
 		template = get_main_template()
 
 	# write the template to the requested file
-	with open(file, 'w', encoding='utf-8') as f:
-		f.write(template)
+	write_template(file, template)
 
-	# allow editing, do a Betty check, and compile
-	subprocess.run(f'vim {file}', shell=True)
-	subprocess.run(f'betty {file}', shell=True)
-	# subprocess.run(f'gcc -Wall -Werror -Wextra -pedantic -std=gnu89 {file} && ./a.out', shell=True)
+	edit_run_betty(file)
 	sys.exit()
 
 
@@ -99,6 +91,18 @@ int main(void)
 	return dedent(template)
 
 
+
+def write_template(file, template):
+	# write the template to the requested file
+	with open(file, 'w', encoding='utf-8') as f:
+		f.write(template)
+
+def edit_run_betty(file):
+	# allow editing, do a Betty check, and compile
+	subprocess.run(f'vim {file}', shell=True)
+	print(f'{arrows} Running Betty on your code ...')
+	subprocess.run(f'betty {file}', shell=True)
+	# subprocess.run(f'gcc -Wall -Werror -Wextra -pedantic -std=gnu89 {file} && ./a.out', shell=True)
+
 if __name__ == '__main__':
 	main()
-
