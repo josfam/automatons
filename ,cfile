@@ -8,14 +8,23 @@ import sys
 import subprocess
 from textwrap import dedent
 
-if not (2 <= len(sys.argv) <= 3):
-    sys.exit('usage: ,cfile <name of c file>.c <function signature>')
+if not (2 <= len(sys.argv) <= 4):
+    sys.exit('usage: ,cfile <mainargs> <name of c file>.c <function signature>')
 
-file = sys.argv[1]
-sig = sys.argv[2] if len(sys.argv) == 3 else None
-arrows = '======>' 
+arrows = '======>'
 
 def main():
+	arg = sys.argv[1]
+	if arg == 'mainargs':
+		file = sys.argv[2]
+		template = get_main_with_args()
+		write_template(file, template)
+		edit_run_betty(file)
+		sys.exit()
+
+	signature = sys.argv[2] if len(sys.argv) == 3 else None
+
+	file = sys.argv[1]
 	# don't compile main.h
 	if file == "main.h":
 		# allow editing, and do a betty check afterwards
@@ -91,6 +100,28 @@ int main(void)
 	return dedent(template)
 
 
+def get_main_with_args():
+	return_line = """
+{
+	return (0);
+}
+""".strip()
+
+	template = f"""#include <stdio.h>
+
+/**
+ * main - Entry point.
+ * @argc: Length of array of commandline arguments.
+ * @argv: Array of commandline arguments.
+ * Description: The main entry point of the program.
+ * Return: 0 if successful, Non-zero otherwise.
+ */
+int main(int argc, char *argv[])
+{return_line}
+
+"""
+
+	return dedent(template)
 
 def write_template(file, template):
 	# write the template to the requested file
