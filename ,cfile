@@ -33,8 +33,8 @@ def main():
 		subprocess.run(f'gcc -Wall -Werror -Wextra -pedantic -std=gnu89 {file} && ./a.out', shell=True)
 		sys.exit()
 	
-	if sig:
-		template = get_func_template(sig)
+	if signature:
+		template = get_func_template(signature)
 	else:
 		template = get_main_template()
 
