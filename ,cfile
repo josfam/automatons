@@ -56,7 +56,7 @@ def main():
 
 def get_func_template(signature):
 	# extract return type, function name and arguments portion
-	ret_func_name, partial_args = signature.split('(')
+	ret_func_name, partial_args = signature.split('(', maxsplit=1)
 	ret_val, func = ret_func_name.split(' ')
 	args = '(' + partial_args
 	placeholder = """{
