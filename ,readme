@@ -1,0 +1,21 @@
+#!/usr/bin/env python3
+
+"""Creates an empty README file whose title is the name of the
+current working directory. 
+"""
+from pathlib import Path
+import subprocess
+import sys
+
+cwd = subprocess.run(['pwd'], capture_output=True)
+dir = cwd.stdout.decode().strip().rsplit('/')[-1]
+
+if (Path.exists(Path("README.md"))):
+	sys.exit('README.md already exists, and will not be overwritten!')
+
+with open('README.md', 'w', encoding='utf-8') as f:
+	heading = f"""# {dir}"""
+	f.write(heading)
+	f.write('\n')
+
+print(dir)
