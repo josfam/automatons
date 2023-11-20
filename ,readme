@@ -17,5 +17,5 @@ with open('README.md', 'w', encoding='utf-8') as f:
 	heading = f"""# {dir}"""
 	f.write(heading)
 	f.write('\n')
-
-print(dir)
+	print('README created successfully')
+	sys.exit(0)
