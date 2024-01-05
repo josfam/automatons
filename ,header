@@ -7,7 +7,7 @@ from textwrap import dedent
 script_name = ',header'
 argvlen = len(sys.argv)
 
-if not (argvlen == 2 or argvlen == 4):
+if not (argvlen in (2, 3, 4)):
     sys.exit(f"usages: \n{script_name} headerfile new \n{script_name} headerfile prototype description")
 
 header_file = sys.argv[1]
@@ -48,8 +48,8 @@ with open(header_file, 'r', encoding='utf-8') as f:
 
 # add description, prototype, with additional new lines if necessary
 last_line = lines.pop()
-if lines[-1].startswith('#define'):
-    lines.append('\n')
+if lines[-1].startswith('#endif'):
+	lines.append('\n')
 lines.append(f'/* {desc} */\n')
 lines.append(f'{prototype}\n\n')
 lines.append(last_line)
