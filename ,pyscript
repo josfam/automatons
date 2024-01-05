@@ -1,0 +1,37 @@
+#!/usr/bin/env python3
+import argparse
+import subprocess
+import sys
+from pathlib import Path
+
+parser = argparse.ArgumentParser()
+parser.add_argument('file', help='The name of the script file to create')
+parser.add_argument('--main', action='store_true',
+                    help="Adds the if __name__=='__main__' line")
+args = parser.parse_args()
+
+# append .py extension if it was skipped
+file = f'{args.file.split(".py")[0]}.py'
+
+# Don't overwrite files unless stated
+if Path('.', file).exists():
+    overwrite = input(f'`{file}` already exists!\nOverwrite? (y/n): ')
+    if overwrite.strip().startswith('n'):
+        sys.exit('Okay. No files were changed! Bye!')
+
+shebang = '#!/usr/bin/python3'
+name_line = """if __name__ == '__main__':
+    pass
+""".strip() if args.main else ''
+
+content = f"""{shebang}
+{name_line}
+""".strip()
+
+command = f"""touch {file} \
+    && echo "{content}" > {file} \
+    && sudo chmod +x {file}
+"""
+
+subprocess.run(command, shell=True)
+print(f'`{file}` created successfully!')
