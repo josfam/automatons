@@ -8,6 +8,9 @@ parser = argparse.ArgumentParser()
 parser.add_argument('file', help='The name of the script file to create')
 parser.add_argument('--main', action='store_true',
                     help="Adds the if __name__=='__main__' line")
+parser.add_argument('--noenvbang', action='store_true',
+                    help='Adds a shebang line that uses /usr/bin/python3 instead\
+                    of /usr/bin/env python3')
 args = parser.parse_args()
 
 # append .py extension if it was skipped
@@ -19,7 +22,8 @@ if Path('.', file).exists():
     if overwrite.strip().startswith('n'):
         sys.exit('Okay. No files were changed! Bye!')
 
-shebang = '#!/usr/bin/python3'
+shebang = '#/usr/bin/python3' if args.noenvbang else '#!/usr/bin/env python3'
+
 name_line = """if __name__ == '__main__':
     pass
 """.strip() if args.main else ''
