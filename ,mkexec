@@ -1,0 +1,12 @@
+#!/usr/bin/python3
+import argparse
+import subprocess
+
+parser = argparse.ArgumentParser()
+parser.add_argument('file', help='The name of the file to make executable')
+args = parser.parse_args()
+
+file = args.file
+
+command = f"""sudo chmod +x {file}"""
+subprocess.run(command, shell=True)
