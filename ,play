@@ -1,0 +1,12 @@
+#!/usr/bin/python3
+import argparse
+import subprocess
+
+parser = argparse.ArgumentParser()
+parser.add_argument('file', help='The name of the asciinema file to play')
+args = parser.parse_args()
+
+file = args.file
+
+command = f"""asciinema play {file}"""
+subprocess.run(command, shell=True)
