@@ -22,7 +22,7 @@ if Path('.', file).exists():
     if overwrite.strip().startswith('n'):
         sys.exit('Okay. No files were changed! Bye!')
 
-shebang = '#/usr/bin/python3' if args.noenvbang else '#!/usr/bin/env python3'
+shebang = '#!/usr/bin/python3' if args.noenvbang else '#!/usr/bin/env python3'
 
 name_line = """if __name__ == '__main__':
     pass
