@@ -3,6 +3,7 @@
 """Creates an empty README file whose title is the name of the
 current working directory. 
 """
+
 from pathlib import Path
 import subprocess
 import sys

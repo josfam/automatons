@@ -1,4 +1,7 @@
 #!/usr/bin/python3
+
+"""Makes the given file executable"""
+
 import argparse
 import subprocess
 
