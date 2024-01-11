@@ -13,6 +13,8 @@ parser = argparse.ArgumentParser()
 parser.add_argument('file', help='The name of the script file to create')
 parser.add_argument('--main', action='store_true',
                     help="Adds the if __name__=='__main__' line")
+parser.add_argument('--ignore', action='store_true',
+                    help='Adds this script to a .gitignore file in the same directory')
 parser.add_argument('--envbang', action='store_true',
                     help='Adds a shebang line that uses /usr/bin/env python3 instead\
                     of /usr/bin/python3')
@@ -20,6 +22,7 @@ args = parser.parse_args()
 
 # append .py extension if it was skipped
 file = f'{args.file.split(".py")[0]}.py'
+ignore = args.ignore
 
 # Don't overwrite files unless stated
 if Path('.', file).exists():
@@ -43,4 +46,10 @@ command = f"""touch {file} \
 """
 
 subprocess.run(command, shell=True)
-print(f'`{file}` created successfully!')
+
+ignore_message = ''
+if ignore:
+    subprocess.run(f'echo {file} >> .gitignore', shell=True)
+    ignore_message = '\nand added to .gitignore.'
+
+print(f'`{file}` created successfully!{ignore_message}')
