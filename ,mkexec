@@ -1,9 +1,13 @@
 #!/usr/bin/python3
 
-"""Makes the given file executable"""
+"""Makes the given file executable.
+Creates the file if it does not exist."""
 
 import argparse
 import subprocess
+import sys
+from textwrap import dedent
+from pathlib import Path
 
 parser = argparse.ArgumentParser()
 parser.add_argument('file', help='The name of the file to make executable')
@@ -11,5 +15,15 @@ args = parser.parse_args()
 
 file = args.file
 
+if not Path('.', file).exists():
+    print(f"The file `{file}`, does not exit.")
+    response = input('Do you want to create it? (y/n) ').lower().strip()
+    if response.startswith('y'):
+        subprocess.run(f'touch {file}', shell=True)
+        print(f'File `{file}` created...')
+    else:
+        sys.exit('Process aborted. Thank you.')
+
 command = f"""sudo chmod +x {file}"""
+print(f'File `{file}` is now executable.')
 subprocess.run(command, shell=True)
