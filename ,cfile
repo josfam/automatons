@@ -19,6 +19,8 @@ parser.add_argument('-b', '--betty', action='store_true',
 					help='Runs the ALX SE betty style checker on the c file')
 parser.add_argument('-e', '--edit', action='store_true',
 					help='Opens the file in vim text editor')
+parser.add_argument('-d', '--desc', type=str,
+					help='Adds a description of the function prototype')
 
 args = parser.parse_args()
 file = args.file
@@ -26,6 +28,7 @@ signature = args.prototype if args.prototype else None
 main_args = args.main if args.main else None
 edit = args.edit if args.edit else None
 betty = args.betty if args.betty else None
+desc = args.desc if args.desc else 'Description'
 arrows = '======>'
 
 def main():
@@ -75,9 +78,9 @@ def get_func_template(signature):
 	template = dedent(f"""	#include "main.h"
 
 	/**
-	* {func} - Short desc
+	* {func} - {desc}
 	* @parameter: Description
-	* Description: Long desc
+	* Description: {desc}
 	* Return: ...
 	*/
 	{ret_val} {func} {args.rstrip(';')}
