@@ -15,32 +15,37 @@ parser.add_argument('-m', '--main', action='store_true',
 					help='Adds a standard prototype of main to the c file')
 parser.add_argument('-p', '--prototype',
 					help='Adds a function prototype to the c file')
+parser.add_argument('-b', '--betty', action='store_true',
+					help='Runs the ALX SE betty style checker on the c file')
+parser.add_argument('-e', '--edit', action='store_true',
+					help='Opens the file in vim text editor')
 
 args = parser.parse_args()
 file = args.file
 signature = args.prototype if args.prototype else None
 main_args = args.main if args.main else None
-
+edit = args.edit if args.edit else None
+betty = args.betty if args.betty else None
 arrows = '======>'
 
 def main():
 	if main_args:
 		template = get_main_with_args()
 		write_template(file, template)
-		edit_run_betty(file)
+		edit_betty(file, edit=edit, betty=betty)
 		sys.exit()
 
 	# don't compile main.h
 	if file == "main.h":
 		# allow editing, and do a betty check afterwards
-		edit_run_betty(file)
+		edit_betty(file, edit=edit, betty=betty)
 		print()
 		sys.exit()
 
 	# Run Betty on the file, and compile if it already exists
 	if os.path.exists(file):
 		# allow editing, and do a betty check afterwards
-		edit_run_betty(file)
+		edit_betty(file, edit=edit, betty=betty)
 		print()
 		print(f'{arrows} Compiling, and running your code with gcc ...')
 		print()
@@ -54,8 +59,7 @@ def main():
 
 	# write the template to the requested file
 	write_template(file, template)
-
-	edit_run_betty(file)
+	edit_betty(file, edit=edit, betty=betty)
 	sys.exit()
 
 
@@ -133,12 +137,14 @@ def write_template(file, template):
 	with open(file, 'w', encoding='utf-8') as f:
 		f.write(template)
 
-def edit_run_betty(file):
+def edit_betty(file, edit=False, betty=False):
 	# allow editing, do a Betty check, and compile
-	subprocess.run(f'vim {file}', shell=True)
-	print(f'{arrows} Running Betty on your code ...')
-	subprocess.run(f'betty {file}', shell=True)
-	# subprocess.run(f'gcc -Wall -Werror -Wextra -pedantic -std=gnu89 {file} && ./a.out', shell=True)
+	if edit:
+		subprocess.run(f'vim {file}', shell=True)
+	if betty:
+		print(f'{arrows} Running Betty on your code ...')
+		subprocess.run(f'betty {file}', shell=True)
+		# subprocess.run(f'gcc -Wall -Werror -Wextra -pedantic -std=gnu89 {file} && ./a.out', shell=True)
 
 if __name__ == '__main__':
 	main()
