@@ -144,7 +144,6 @@ def edit_betty(file, edit=False, betty=False):
 	if betty:
 		print(f'{arrows} Running Betty on your code ...')
 		subprocess.run(f'betty {file}', shell=True)
-		# subprocess.run(f'gcc -Wall -Werror -Wextra -pedantic -std=gnu89 {file} && ./a.out', shell=True)
 
 if __name__ == '__main__':
 	main()
