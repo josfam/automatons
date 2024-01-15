@@ -65,66 +65,66 @@ def get_func_template(signature):
 	ret_val, func = ret_func_name.split(' ')
 	args = '(' + partial_args
 	placeholder = """{
-	...
-}
-	"""	
-	template = f"""#include "main.h"
-
-/**
- * {func} - Short desc
- * @parameter: Description
- * Description: Long desc
- * Return: ...
- */
-{ret_val} {func} {args.rstrip(';')}
-{placeholder}
+		...
+	}
 	"""
+	template = dedent(f"""	#include "main.h"
+
+	/**
+	* {func} - Short desc
+	* @parameter: Description
+	* Description: Long desc
+	* Return: ...
+	*/
+	{ret_val} {func} {args.rstrip(';')}
+	{placeholder}
+	""")
 
 	return dedent(template)
 
 
 def get_main_template():
 	return_line = """
-{
-	return (0);
-}
-""".strip()
+	{
+		return (0);
+	}
+	""".strip()
 
-	template = f"""#include <stdio.h>
+	template = dedent(f"""	#include <stdio.h>
 
-/**
- * main - Entry point.
- * Description: The main entry point of the program.
- * Return: 0 if successful, Non-zero otherwise.
- */
-int main(void)
-{return_line}
+	/**
+	* main - Entry point.
+	* Description: The main entry point of the program.
+	* Return: 0 if successful, Non-zero otherwise.
+	*/
+	int main(void)
+	{return_line}
 
-"""
+	""")
 
 	return dedent(template)
 
 
 def get_main_with_args():
 	return_line = """
-{
-	return (0);
-}
-""".strip()
+	{
+		return (0);
+	}
+	""".strip()
 
-	template = f"""#include <stdio.h>
+	template = dedent(f"""	#include <stdio.h>
 
-/**
- * main - Entry point.
- * @argc: Length of array of commandline arguments.
- * @argv: Array of commandline arguments.
- * Description: The main entry point of the program.
- * Return: 0 if successful, Non-zero otherwise.
- */
-int main(__attribute__((unused)) int argc, char *argv[])
-{return_line}
+	/**
+	* main - Entry point.
+	* @argc: Length of array of commandline arguments.
+	* @argv: Array of commandline arguments.
+	* Description: The main entry point of the program.
+	* Return: 0 if successful, Non-zero otherwise.
+	*/
+	int main(__attribute__((unused)) int argc, char *argv[])
+	{return_line}
 
-"""
+	""")
 
 	return dedent(template)
 
