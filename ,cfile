@@ -7,24 +7,29 @@ import os
 import sys
 import subprocess
 from textwrap import dedent
+import argparse
 
-if not (2 <= len(sys.argv) <= 4):
-    sys.exit('usage: ,cfile <mainargs> <name of c file>.c <function signature>')
+parser = argparse.ArgumentParser(allow_abbrev=False)
+parser.add_argument('file', help='The c file to create')
+parser.add_argument('-m', '--main', action='store_true',
+					help='Adds a standard prototype of main to the c file')
+parser.add_argument('-p', '--prototype',
+					help='Adds a function prototype to the c file')
+
+args = parser.parse_args()
+file = args.file
+signature = args.prototype if args.prototype else None
+main_args = args.main if args.main else None
 
 arrows = '======>'
 
 def main():
-	arg = sys.argv[1]
-	if arg == 'mainargs':
-		file = sys.argv[2]
+	if main_args:
 		template = get_main_with_args()
 		write_template(file, template)
 		edit_run_betty(file)
 		sys.exit()
 
-	signature = sys.argv[2] if len(sys.argv) == 3 else None
-
-	file = sys.argv[1]
 	# don't compile main.h
 	if file == "main.h":
 		# allow editing, and do a betty check afterwards
