@@ -6,7 +6,8 @@ import argparse
 import subprocess
 
 parser = argparse.ArgumentParser()
-parser.add_argument('files', help='The C file/files to compile')
+parser.add_argument('files', nargs='+',
+					help='The C file/files to compile')
 parser.add_argument('-s', '--strict', action='store_true',
 					help='Compiles with strict compiler flags')
 
@@ -21,13 +22,13 @@ parser.add_argument('--out', type=str,
 					help='The name of the output file after compilation')
 args = parser.parse_args()
 
-file = args.files
+files = ' '.join(args.files)
 run = args.run if args.run else None
 strict = '-Wall -pedantic -Werror -Wextra -std=gnu89' if args.strict else ''
 valgrind = 'valgrind --leak-check=full --track-origins=yes' if args.val else ''
 outfile = f'{args.out}' if args.out else "a.out"
 
-compilation = f"""gcc {strict} {file} -o {outfile}"""
+compilation = f"""gcc {strict} {files} -o {outfile}"""
 running = f"""{valgrind} ./{outfile}"""
 
 subprocess.run(compilation, shell=True)
