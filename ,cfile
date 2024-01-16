@@ -21,6 +21,8 @@ parser.add_argument('-e', '--edit', action='store_true',
 					help='Opens the file in vim text editor')
 parser.add_argument('-d', '--desc', type=str,
 					help='Adds a description of the function prototype')
+parser.add_argument('--header',
+					help='The header file to include in the c file')
 
 args = parser.parse_args()
 file = args.file
@@ -29,6 +31,7 @@ main_args = args.main if args.main else None
 edit = args.edit if args.edit else None
 betty = args.betty if args.betty else None
 desc = args.desc if args.desc else 'Description'
+header = f'#include "{args.header.split(".")[0]}.h"\n' if args.header else ''
 arrows = '======>'
 
 def main():
@@ -75,15 +78,14 @@ def get_func_template(signature):
 		...
 	}
 	"""
-	template = dedent(f"""	#include "main.h"
-
+	template = dedent(f"""	{header}
 	/**
 	* {func} - {desc}
 	* @parameter: Description
 	* Description: {desc}
 	* Return: ...
 	*/
-	{ret_val} {func} {args.rstrip(';')}
+	{ret_val} {func}{args.rstrip(';')}
 	{placeholder}
 	""")
 
@@ -98,7 +100,7 @@ def get_main_template():
 	""".strip()
 
 	template = dedent(f"""	#include <stdio.h>
-
+	{header}
 	/**
 	* main - Entry point.
 	* Description: The main entry point of the program.
@@ -120,7 +122,7 @@ def get_main_with_args():
 	""".strip()
 
 	template = dedent(f"""	#include <stdio.h>
-
+	{header}
 	/**
 	* main - Entry point.
 	* @argc: Length of array of commandline arguments.
