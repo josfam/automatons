@@ -1,0 +1,35 @@
+#!/usr/bin/env python3
+
+"""Compiles and runs a C file"""
+
+import argparse
+import subprocess
+
+parser = argparse.ArgumentParser()
+parser.add_argument('files', help='The C file/files to compile')
+parser.add_argument('-s', '--strict', action='store_true',
+					help='Compiles with strict compiler flags')
+
+# only one of these flags can be used at one time
+run_group = parser.add_mutually_exclusive_group()
+run_group.add_argument('-r', '--run', action='store_true',
+					help='Runs the program')
+run_group.add_argument('-v', '--val', action='store_true',
+					help='Runs the program inside a valgrind environment')
+
+parser.add_argument('--out', type=str,
+					help='The name of the output file after compilation')
+args = parser.parse_args()
+
+file = args.files
+run = args.run if args.run else None
+strict = '-Wall -pedantic -Werror -Wextra -std=gnu89' if args.strict else ''
+valgrind = 'valgrind --leak-check=full --track-origins=yes' if args.val else ''
+outfile = f'{args.out}' if args.out else "a.out"
+
+compilation = f"""gcc {strict} {file} -o {outfile}"""
+running = f"""{valgrind} ./{outfile}"""
+
+subprocess.run(compilation, shell=True)
+if run or valgrind:
+	subprocess.run(running, shell=True)
