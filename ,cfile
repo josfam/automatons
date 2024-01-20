@@ -123,7 +123,7 @@ def get_main_with_args():
 	* Description: The main entry point of the program.
 	* Return: 0 if successful, Non-zero otherwise.
 	*/
-	int main(__attribute__((unused)) int argc, char *argv[])
+    int main(int argc, char *argv[])
 	{return_line}
 
 	""")
