@@ -4,6 +4,9 @@
 
 import argparse
 import subprocess
+import sys
+from pathlib import Path
+from textwrap import dedent
 
 parser = argparse.ArgumentParser()
 parser.add_argument('files', nargs='+', help='The C file/files to compile')
@@ -14,7 +17,10 @@ parser.add_argument('-v', '--val', action='store_true', help='Runs the program i
                     environment')
 parser.add_argument('--opts', nargs='+', type=str, help='Commandline options to add to\
                     the running program')
+parser.add_argument('--dir', help='Runs the program on each file in\
+                     the provided directory')
 parser.add_argument('--out', type=str, help='The name of the output file after compilation')
+
 args = parser.parse_args()
 
 valgrind_flags = 'valgrind --leak-check=full --track-origins=yes --show-leak-kinds=all'
@@ -27,6 +33,7 @@ strict = gcc_strict_flags if args.strict else ''
 val =  valgrind_flags if args.val else ''
 outfile = f'{args.out}' if args.out else "a.out"
 cmd_args = ' '.join(args.opts) if args.opts else ''
+dir_given = args.dir if args.dir else None
 
 def main():
     compilation = f"""gcc {strict} {files} -o {outfile}"""
@@ -34,7 +41,24 @@ def main():
 
     subprocess.run(compilation, shell=True)
     if run or val:
+        if dir_given:
+            run_with_files(dir_given)
         subprocess.run(running, shell=True)
+
+def run_with_files(dir):
+    dir = Path(dir)
+    if ((not Path.exists(dir)) or (not Path.is_dir(dir))):
+         sys.exit(f"`{dir}` is not a directory, or does not exist")
+    files = [x for x in Path.iterdir(dir)]
+    for file in files:
+        message = dedent(f"""   
+        ------------------------
+        Running `{outfile}` on `{file.name}`
+        ------------------------
+        """).strip()
+        print(message)
+        subprocess.run(f"""{val} ./{outfile} {file}""", shell=True)
+    sys.exit()
 
 if __name__ == '__main__':
 	main()
