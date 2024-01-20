@@ -6,32 +6,35 @@ import argparse
 import subprocess
 
 parser = argparse.ArgumentParser()
-parser.add_argument('files', nargs='+',
-					help='The C file/files to compile')
-parser.add_argument('-s', '--strict', action='store_true',
-					help='Compiles with strict compiler flags')
-
-parser.add_argument('-r', '--run', action='store_true',
-					help='Runs the program')
-parser.add_argument('-v', '--val', action='store_true',
-					help='Runs the program inside a valgrind environment')
-
-parser.add_argument('--opts', nargs='+', type=str,
-					help='Commandline options to add to the running program')
-parser.add_argument('--out', type=str,
-					help='The name of the output file after compilation')
+parser.add_argument('files', nargs='+', help='The C file/files to compile')
+parser.add_argument('-s', '--strict', action='store_true', help='Compiles with strict compiler\
+                    flags')
+parser.add_argument('-r', '--run', action='store_true', help='Runs the program')
+parser.add_argument('-v', '--val', action='store_true', help='Runs the program inside a valgrind\
+                    environment')
+parser.add_argument('--opts', nargs='+', type=str, help='Commandline options to add to\
+                    the running program')
+parser.add_argument('--out', type=str, help='The name of the output file after compilation')
 args = parser.parse_args()
 
+valgrind_flags = 'valgrind --leak-check=full --track-origins=yes --show-leak-kinds=all'
+gcc_strict_flags = '-Wall -pedantic -Werror -Wextra -std=gnu89'
+
+# store args
 files = ' '.join(args.files)
 run = args.run if args.run else None
-strict = '-Wall -pedantic -Werror -Wextra -std=gnu89' if args.strict else ''
-valgrind = 'valgrind --leak-check=full --track-origins=yes --show-leak-kinds=all' if args.val else ''
+strict = gcc_strict_flags if args.strict else ''
+val =  valgrind_flags if args.val else ''
 outfile = f'{args.out}' if args.out else "a.out"
 cmd_args = ' '.join(args.opts) if args.opts else ''
 
-compilation = f"""gcc {strict} {files} -o {outfile}"""
-running = f"""{valgrind} ./{outfile} {cmd_args}"""
+def main():
+    compilation = f"""gcc {strict} {files} -o {outfile}"""
+    running = f"""{val} ./{outfile} {cmd_args}"""
 
-subprocess.run(compilation, shell=True)
-if run or valgrind:
-	subprocess.run(running, shell=True)
+    subprocess.run(compilation, shell=True)
+    if run or val:
+        subprocess.run(running, shell=True)
+
+if __name__ == '__main__':
+	main()
