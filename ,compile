@@ -11,11 +11,9 @@ parser.add_argument('files', nargs='+',
 parser.add_argument('-s', '--strict', action='store_true',
 					help='Compiles with strict compiler flags')
 
-# only one of these flags can be used at one time
-run_group = parser.add_mutually_exclusive_group()
-run_group.add_argument('-r', '--run', action='store_true',
+parser.add_argument('-r', '--run', action='store_true',
 					help='Runs the program')
-run_group.add_argument('-v', '--val', action='store_true',
+parser.add_argument('-v', '--val', action='store_true',
 					help='Runs the program inside a valgrind environment')
 
 parser.add_argument('--opts', nargs='+', type=str,
