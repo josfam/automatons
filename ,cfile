@@ -53,36 +53,46 @@ def main():
         edit_betty(file, edit=edit, betty=betty)
         sys.exit()
 
+    # Run Betty on the file, and compile if it already exists
+    if os.path.exists(file):
+        # allow editing, and do a betty check afterwards
+        edit_betty(file, edit=edit, betty=betty)
+        print()
+        print(f'{arrows} Compiling, and running your code with gcc ...')
+        print()
+        subprocess.run(f'gcc -Wall -Werror -Wextra -pedantic -std=gnu89 {file} && ./a.out', shell=True)
+        sys.exit()
+
     if prototype:
         template = get_func_template(prototype)
 
-	# write the template to the requested file
-	write_template(file, template)
-	edit_betty(file, edit=edit, betty=betty)
-	sys.exit()
+    # write the template to the requested file
+    write_template(file, template)
+    edit_betty(file, edit=edit, betty=betty)
+    sys.exit()
 
 
 def get_func_template(prototype):
-	# extract return type, function name and arguments portion
+    # extract return type, function name and arguments portion
     ret_func_name, partial_args = prototype.split('(', maxsplit=1)
-	ret_val, func = ret_func_name.split(' ')
-	args = '(' + partial_args
-	placeholder = """{
-		...
-	}
-	"""
-	template = dedent(f"""	{header}
-	/**
-	* {func} - {desc}
-	* @parameter: Description
-	* Description: {desc}
-	* Return: ...
-	*/
-	{ret_val} {func}{args.rstrip(';')}
-	{placeholder}
-	""")
+    ret_val, func = ret_func_name.split(' ')
+    args = '(' + partial_args
+    placeholder = """{
+        ...
+    }
+    """
+    template = dedent(f"""	{header}
+    /**
+    * {func} - {desc}
+    * @parameter: Description
+    * Description: {desc}
+    * Return: ...
+    */
+    {ret_val} {func}{args.rstrip(';')}
+    {placeholder}
+    """)
 
-	return dedent(template)
+    return dedent(template)
 
 
 def get_main_void():
@@ -92,56 +102,58 @@ def get_main_void():
     }
     """.strip()
 
-	template = dedent(f"""	#include <stdio.h>
-	{header}
-	/**
-	* main - Entry point.
-	* Description: The main entry point of the program.
-	* Return: 0 if successful, Non-zero otherwise.
-	*/
-	int main(void)
-	{return_line}
+    template = dedent(f"""    #include <stdio.h>
+    {header}
+    /**
+    * main - Entry point.
+    * Description: The main entry point of the program.
+    * Return: 0 if successful, Non-zero otherwise.
+    */
+    int main(void)
+    {return_line}
 
-	""")
+    """)
 
-	return dedent(template)
+    return dedent(template)
 
 
 def get_main_with_args():
-	return_line = """
-	{
-		return (0);
-	}
-	""".strip()
+    return_line = """
+    {
+        return (0);
+    }
+    """.strip()
 
-	template = dedent(f"""	#include <stdio.h>
-	{header}
-	/**
-	* main - Entry point.
-	* @argc: Length of array of commandline arguments.
-	* @argv: Array of commandline arguments.
-	* Description: The main entry point of the program.
-	* Return: 0 if successful, Non-zero otherwise.
-	*/
+    template = dedent(f"""    #include <stdio.h>
+    {header}
+    /**
+    * main - Entry point.
+    * @argc: Length of array of commandline arguments.
+    * @argv: Array of commandline arguments.
+    * Description: The main entry point of the program.
+    * Return: 0 if successful, Non-zero otherwise.
+    */
     int main(int argc, char *argv[])
-	{return_line}
+    {return_line}
 
-	""")
+    """)
 
-	return dedent(template)
+    return dedent(template)
+
 
 def write_template(file, template):
-	# write the template to the requested file
-	with open(file, 'w', encoding='utf-8') as f:
-		f.write(template)
+    # write the template to the requested file
+    with open(file, 'w', encoding='utf-8') as f:
+        f.write(template)
+
 
 def edit_betty(file, edit=False, betty=False):
-	# allow editing, do a Betty check, and compile
-	if edit:
-		subprocess.run(f'vim {file}', shell=True)
-	if betty:
-		print(f'{arrows} Running Betty on your code ...')
-		subprocess.run(f'betty {file}', shell=True)
+    # allow editing, do a Betty check, and compile
+    if edit:
+        subprocess.run(f'vim {file}', shell=True)
+    if betty:
+        print(f'{arrows} Running Betty on your code ...')
+        subprocess.run(f'betty {file}', shell=True)
 
 if __name__ == '__main__':
-	main()
+    main()
