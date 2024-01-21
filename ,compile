@@ -52,12 +52,12 @@ def run_with_files(dir):
     files = [x for x in Path.iterdir(dir)]
     for file in files:
         message = f"Running `{outfile}` on `{file}`"
-        bordered_message = draw_message_border(message, outfile, file)
+        bordered_message = draw_message_border(message)
         print(bordered_message)
         subprocess.run(f"""{val} ./{outfile} {file}""", shell=True)
     sys.exit()
 
-def draw_message_border(message, outfile, file):
+def draw_message_border(message):
     h_pad = 2 # total horizontal padding
     message_len = len(message)
     h_len = message_len + h_pad
