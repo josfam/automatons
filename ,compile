@@ -49,7 +49,7 @@ def run_with_files(dir):
     dir = Path(dir)
     if ((not Path.exists(dir)) or (not Path.is_dir(dir))):
          sys.exit(f"`{dir}` is not a directory, or does not exist")
-    files = [x for x in Path.iterdir(dir)]
+    files = [x for x in Path.iterdir(dir) if x.is_file()]
     for file in files:
         message = f"Running `{outfile}` on `{file}`"
         bordered_message = draw_message_border(message)
