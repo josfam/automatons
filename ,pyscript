@@ -8,6 +8,7 @@ import argparse
 import subprocess
 import sys
 from pathlib import Path
+from textwrap import dedent
 
 parser = argparse.ArgumentParser()
 parser.add_argument('file', help='The name of the script file to create')
@@ -18,6 +19,7 @@ parser.add_argument('--ignore', action='store_true',
 parser.add_argument('--envbang', action='store_true',
                     help='Adds a shebang line that uses /usr/bin/env python3 instead\
                     of /usr/bin/python3')
+parser.add_argument('--fn', help='Function prototype to add to the python file')
 args = parser.parse_args()
 
 # append .py extension if it was skipped
@@ -30,13 +32,24 @@ if Path('.', file).exists():
     if overwrite.strip().startswith('n'):
         sys.exit('Okay. No files were changed! Bye!')
 
+fn = str(args.fn) if args.fn else ''
 shebang = '#!/usr/bin/env python3' if args.envbang else '#!/usr/bin/python3'
+ellipsis_line = """..."""
+
+if fn:
+    fn = dedent(f"""    
+    def {fn}():
+        {ellipsis_line}
+    """).strip()
 
 name_line = """if __name__ == '__main__':
     pass
 """.strip() if args.main else ''
 
-content = f"""{shebang}
+content = f"""
+{shebang}
+
+{fn}
 {name_line}
 """.strip()
 
