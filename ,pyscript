@@ -37,8 +37,9 @@ shebang = '#!/usr/bin/env python3' if args.envbang else '#!/usr/bin/python3'
 ellipsis_line = """..."""
 
 if fn:
+    brackets = '()' if '(' not in fn else ''
     fn = dedent(f"""    
-    def {fn}():
+    def {fn}{brackets}:
         {ellipsis_line}
     """).strip()
 
