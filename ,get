@@ -10,7 +10,7 @@ from pathlib import Path
 
 parser = argparse.ArgumentParser()
 
-parser.add_argument('url', help='The url of the file to download')
+parser.add_argument('url', type=str, help='The url of the file to download')
 parser.add_argument('-r', '--rename', help='The new name of the newly downloaded file')
 args = parser.parse_args()
 
@@ -21,7 +21,7 @@ def main():
     if rename:
         rename_downloaded_file(rename)
     else:
-        subprocess.run(f'wget {url}', shell=True)
+        subprocess.run(f'wget "{url}"', shell=True)
 
 
 def rename_downloaded_file(new_name):
@@ -30,7 +30,7 @@ def rename_downloaded_file(new_name):
     files_before = set(x.name for x in Path.iterdir(Path(cwd)))
 
     # download the file and detect the new file
-    subprocess.run(f'wget {url}', shell=True)
+    subprocess.run(f'wget "{url}"', shell=True)
     files_after = set(x.name for x in Path.iterdir(Path(cwd)))
     new_file = "".join(files_after.difference(files_before))
 

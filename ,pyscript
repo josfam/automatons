@@ -14,9 +14,9 @@ parser = argparse.ArgumentParser()
 parser.add_argument('file', help='The name of the script file to create')
 parser.add_argument('--main', action='store_true',
                     help="Adds the if __name__=='__main__' line")
-parser.add_argument('--ignore', action='store_true',
+parser.add_argument('-i', '--ignore', action='store_true',
                     help='Adds this script to a .gitignore file in the same directory')
-parser.add_argument('--envbang', action='store_true',
+parser.add_argument('--env', action='store_true',
                     help='Adds a shebang line that uses /usr/bin/env python3 instead\
                     of /usr/bin/python3')
 parser.add_argument('--fn', help='Function prototype to add to the python file')
@@ -33,7 +33,7 @@ if Path('.', file).exists():
         sys.exit('Okay. No files were changed! Bye!')
 
 fn = str(args.fn) if args.fn else ''
-shebang = '#!/usr/bin/env python3' if args.envbang else '#!/usr/bin/python3'
+shebang = '#!/usr/bin/env python3' if args.env else '#!/usr/bin/python3'
 ellipsis_line = """..."""
 
 if fn:
