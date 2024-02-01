@@ -22,17 +22,17 @@ parser.add_argument('-d', '--desc', type=str,
 parser.add_argument('--header',
 					help='The header file to include in the c file')
 mains = parser.add_mutually_exclusive_group()
-mains.add_argument('--mainargs', action='store_true',
+mains.add_argument('--args', action='store_true',
 					help='Adds a standard argv, argc prototype of main')
-mains.add_argument('--mainvoid', action='store_true',
+mains.add_argument('--void', action='store_true',
 					help='Adds a standard void prototype of main')
 args = parser.parse_args()
 file = args.file
 
 prototype = args.prototype if args.prototype else None
 # mains versions
-main_standard = args.mainargs if args.mainargs else None
-main_void = args.mainvoid if args.mainvoid else None
+main_standard = args.args if args.args else None
+main_void = args.void if args.void else None
 
 edit = args.edit if args.edit else None
 betty = args.betty if args.betty else None
