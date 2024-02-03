@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 
-"""Generates a template of a basic C file, as per the
-ALX "Betty" program requirements."""
+"""Generates common templates of a C file"""
 
 import os
 import sys

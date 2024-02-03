@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 
+"""Creates and appends content to a c-type header file."""
+
 import sys
 import subprocess
 from textwrap import dedent

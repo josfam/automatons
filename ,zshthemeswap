@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+
 """Switches between any number of zsh ohmyzsh themes by changing the `ZSH_THEME` line in the 
 .zshrc file.
 

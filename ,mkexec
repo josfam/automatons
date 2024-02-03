@@ -1,7 +1,6 @@
 #!/usr/bin/python3
 
-"""Makes the given file executable.
-Creates the file if it does not exist."""
+"""Makes a file executable."""
 
 import argparse
 import subprocess

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-"""Compiles and runs a C file"""
+"""Compiles and runs a c file, along with additional features"""
 
 import argparse
 import subprocess

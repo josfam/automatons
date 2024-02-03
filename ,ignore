@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-"""Adds a file to .gitignore"""
+"""Adds a file to a `.gitignore` file."""
 
 import argparse
 import os

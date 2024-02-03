@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
-""" Sorts css style rules alphabetically"""
+"""Sorts css style rules alphabetically"""
+
 import argparse
 from pathlib import Path
 
