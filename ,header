@@ -3,57 +3,78 @@
 import sys
 import subprocess
 from textwrap import dedent
+from pathlib import Path
+import argparse
 
-script_name = ',header'
-argvlen = len(sys.argv)
+parser = argparse.ArgumentParser()
+parser.add_argument('file', help='The name of the header file')
+parser.add_argument('-p', '--proto',
+                    help='The function prototype to add to the header file')
+parser.add_argument('-d', '--desc',
+                    help='The description to add to the function prototype')
+parser.add_argument('-n', '--new', action='store_true',
+                    help='Creates a new header file')
+args = parser.parse_args()
 
-if not (argvlen in (2, 3, 4)):
-    sys.exit(f"usages: \n{script_name} headerfile new \n{script_name} headerfile prototype description")
 
-header_file = sys.argv[1]
+# add the .h extension to the end of the file
+file = f'{args.file}'.split('.')[0] + '.h'
+prototype = args.proto if args.proto else ''
+desc = args.desc if args.desc else None
+new = args.new if args.new else None
 
-if not header_file.endswith('.h'):
-    sys.exit('Your header file should end with .h\nTry again')
+def main():
+    if new and check_overwrite(file):
+        make_new(file)
+    if prototype:
+        append_function(prototype, desc)
 
-# write the guards into the file
-if argvlen == 3:
-    subprocess.run(f"touch {header_file}", shell=True)
-    guard_name = header_file.rstrip('.h').upper()+'_HEADER'
+def check_overwrite(header_file):
+    if Path(header_file).exists():
+        while (1):
+            response = input(f'`{file}` already exists\
+                        \nOverwrite it (y/n)? ').lower().strip()
+            if response not in ('y', 'n'):
+                continue
+            elif response.startswith('n'):
+                sys.exit(f'No changes were made to `{file}`. Bye!')
+            else:
+                break
+    return 1
+
+def make_new():
+    # write the guards into the file
+    subprocess.run(['touch', f'{file}'])
+    guard_name = file.rstrip('.h').upper()+'_HEADER'
     content = dedent(f"""
-#ifndef {guard_name}
-#define {guard_name}
-#endif
-    """.strip()
-    )
+    #ifndef {guard_name}
+    #define {guard_name}
+    #endif
+    """).strip()
 
-    with open(header_file, 'w', encoding='utf-8') as f:
+    with open(file, 'w', encoding='utf-8') as f:
         f.write(content)
-    print(f'New {header_file} written')
-    sys.exit()
+    print(f'New `{file}` written')
+    sys.exit(0)
 
-prototype = sys.argv[2]
-desc = sys.argv[3]
+def append_function(prototype, desc):
+    lines = []
 
-# check that the arguments have not been switched
-if desc.endswith(');'):
-    print('You may have swapped the prototype and description')
-    print("Here's a reminder of the order:")
-    print(f'{script_name} headerfile prototype description')
-    sys.exit()
+    with open(file, 'r', encoding='utf-8') as f:
+        lines = f.readlines()
 
-lines = []
+    # add description, prototype, with additional new lines if necessary
+    last_line = lines.pop()
+    if lines[-1].startswith('#endif'):
+        lines.append('\n')
+    if desc:
+        lines.append(f'/* {desc} */\n')
+    lines.append(f'{prototype}\n\n')
+    lines.append(last_line)
 
-with open(header_file, 'r', encoding='utf-8') as f:
-    lines = f.readlines()
+    # write new content to 'main.h'
+    with open(file, 'w', encoding='utf-8') as f:
+        f.writelines(lines)
 
-# add description, prototype, with additional new lines if necessary
-last_line = lines.pop()
-if lines[-1].startswith('#endif'):
-	lines.append('\n')
-lines.append(f'/* {desc} */\n')
-lines.append(f'{prototype}\n\n')
-lines.append(last_line)
-
-# write new content to 'main.h'
-with open(header_file, 'w', encoding='utf-8') as f:
-    f.writelines(lines)
+if __name__ == '__main__':
+     main()
