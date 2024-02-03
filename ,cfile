@@ -74,19 +74,8 @@ def process_file(file):
         edit_betty(file, edit=edit, betty=betty)
         sys.exit()
 
-    # Run Betty on the file, and compile if it already exists
-    if os.path.exists(file):
-        # allow editing, and do a betty check afterwards
-        edit_betty(file, edit=edit, betty=betty)
-        print()
-        print(f'{arrows} Compiling, and running your code with gcc ...')
-        print()
-        subprocess.run(f'gcc -Wall -Werror -Wextra -pedantic -std=gnu89 {file} && ./a.out', shell=True)
-        sys.exit()
-
     if prototype:
         template = get_func_template(prototype)
-
     # write the template to the requested file
     write_template(file, template)
     edit_betty(file, edit=edit, betty=betty)
