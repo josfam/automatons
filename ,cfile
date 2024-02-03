@@ -186,6 +186,7 @@ def write_template(file, template):
     # write the template to the requested file
     with open(file, 'w', encoding='utf-8') as f:
         f.write(template)
+    print(f'`{file}` written to successfully!')
 
 
 def edit_betty(file, edit=False, betty=False):
