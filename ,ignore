@@ -1,0 +1,55 @@
+#!/usr/bin/env python3
+
+"""Adds a file to .gitignore"""
+
+import argparse
+import os
+import sys
+import subprocess
+from pathlib import Path
+from textwrap import dedent
+
+parser = argparse.ArgumentParser()
+parser.add_argument('file',
+                    help='The file to add to the .gitignore file')
+args = parser.parse_args()
+
+file = args.file
+
+def main():
+    # create a .gitignore if it does not already exist
+    cwd = os.getcwd()
+    cwd = Path(cwd)
+    files = set(x.name for x in cwd.iterdir() if x.is_file())
+    if '.gitignore' not in files:
+        prompt = dedent(f"""
+        A .gitignore file was not found in this location.
+        Create one? (y/n): 
+        """)
+        while True:
+            response = input(prompt).strip().lower()
+            if response not in ('y', 'n'):
+                continue
+            elif response == 'n':
+                sys.exit('No changes were made. Goodbye!')
+            else:
+                break
+        create_gitignore(file)
+
+    with open('.gitignore', 'a', encoding='utf-8') as f:
+        print(f'Adding `{file}` to .gitignore')
+        subprocess.run(['echo', file], stdout=f, text=True)
+        print('Done!')
+
+
+def create_gitignore(file):
+    print('Creating `.gitignore` file...')
+    subprocess.run(['touch', '.gitignore'])
+
+
+def append_to_ignore(file):
+    pass
+
+
+if __name__ == '__main__':
+    main()
