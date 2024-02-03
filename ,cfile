@@ -7,6 +7,8 @@ import os
 import sys
 import subprocess
 from textwrap import dedent
+from typing import Tuple
+from pathlib import Path
 import argparse
 
 parser = argparse.ArgumentParser(allow_abbrev=False)
@@ -76,10 +78,10 @@ def process_file(file):
 
     if prototype:
         template = get_func_template(prototype)
-    # write the template to the requested file
-    write_template(file, template)
-    edit_betty(file, edit=edit, betty=betty)
-    sys.exit()
+        # write the template to the requested file
+        write_template(file, template)
+        edit_betty(file, edit=edit, betty=betty)
+        sys.exit()
     else:
         # write a main_void template by default
         template = get_main_void()
