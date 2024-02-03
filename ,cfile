@@ -80,9 +80,12 @@ def process_file(file):
     write_template(file, template)
     edit_betty(file, edit=edit, betty=betty)
     sys.exit()
+    else:
+        # write a main_void template by default
+        template = get_main_void()
+        write_template(file, template)
 
 
-def get_func_template(prototype):
     # extract return type, function name and arguments portion
     ret_func_name, partial_args = prototype.split('(', maxsplit=1)
     ret_val, func = ret_func_name.split(' ')
