@@ -108,26 +108,32 @@ def get_func_parts(prototype):
     return return_type, name, args
 
 
+def get_func_template(prot: str) -> Tuple:
     # extract return type, function name and arguments portion
-    ret_func_name, partial_args = prototype.split('(', maxsplit=1)
-    ret_val, func = ret_func_name.split(' ')
-    args = '(' + partial_args
+    args_docs = []
+    ret_val, func, args = get_func_parts(prot)
+
+    for idx, arg in enumerate(args, start=1):
+        args_docs.append(f'    * @{arg}: ')
+        if idx < len(args):
+            args_docs.append('\n')
+
     placeholder = """{
-        ...
+        /* TODO */
     }
     """
-    template = dedent(f"""	{header}
+    template = dedent(f"""  
+    {header}
     /**
     * {func} - {desc}
-    * @parameter: Description
+    {''.join(args_docs)}
     * Description: {desc}
     * Return: ...
     */
-    {ret_val} {func}{args.rstrip(';')}
-    {placeholder}
-    """)
+    {prototype.rstrip(';')}
+    {placeholder}""").lstrip()
 
-    return dedent(template)
+    return (template)
 
 
 def get_main_void():
