@@ -45,7 +45,7 @@ def check_overwrite(header_file):
     if Path(header_file).exists():
         while (1):
             response = input(f'`{file}` already exists\
-                        \nOverwrite it (y/n)? ').lower().strip()
+                        \nOverwrite it? (y/n): ').lower().strip()
             if response not in ('y', 'n'):
                 continue
             elif response.startswith('n'):
