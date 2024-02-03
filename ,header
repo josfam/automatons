@@ -25,7 +25,19 @@ new = args.new if args.new else None
 
 def main():
     if new and check_overwrite(file):
-        make_new(file)
+        make_new()
+    if prototype and not Path(file).exists():
+        while(1):
+            message = f"""`{file}` does not exist.\nCreate it? (y/n): """
+            response = input(message).lower().strip()
+            if response not in ('y', 'n'):
+                continue
+            elif response.startswith('n'):
+                sys.exit(f'`{file}` not created. Bye!')
+            else:
+                break
+        make_new(prototype, desc)
+
     if prototype:
         append_function(prototype, desc)
 
@@ -42,13 +54,17 @@ def check_overwrite(header_file):
                 break
     return 1
 
-def make_new():
+def make_new(prototype='', desc=''):
     # write the guards into the file
     subprocess.run(['touch', f'{file}'])
     guard_name = file.rstrip('.h').upper()+'_HEADER'
+    if desc:
+        desc = f'\n/* {desc} */'
     content = dedent(f"""
     #ifndef {guard_name}
     #define {guard_name}
+    {desc}
+    {prototype}
     #endif
     """).strip()
 
