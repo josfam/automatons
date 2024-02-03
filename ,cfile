@@ -41,6 +41,27 @@ header = f'#include "{args.header.split(".")[0]}.h"\n' if args.header else ''
 arrows = '======>'
 
 def main():
+    # Confirm overwrite
+    if Path.exists(Path(file)):
+        while True:
+            message = dedent(f"""
+            `{file}` already exists.
+            Do you want to create a new one? (y/n): """).lstrip()
+            response = input(message).strip().lower()
+            if response not in ('y', 'n'):
+                continue
+            if response == 'n':
+                message = dedent(f"""
+                Process aborted!.
+                `{file}` file is intact.
+                Goodbye!""").lstrip()
+                sys.exit(message)
+            else:
+                break
+    process_file(file)
+
+
+def process_file(file):
     if main_standard:
         template = get_main_with_args()
         write_template(file, template)
