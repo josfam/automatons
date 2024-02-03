@@ -86,6 +86,28 @@ def process_file(file):
         write_template(file, template)
 
 
+def get_func_parts(prototype):
+    args = []
+    before, _, after = prototype.partition('(')
+    return_type = ' '.join(before.split(' ')[:-1])
+    name = before.split(' ')[-1]
+    num_stars = name.count('*')
+
+    if num_stars > 0:
+        # attach pointer stars to the return type
+        return_type = f"{return_type} {'*' * num_stars}"
+
+    name = name.lstrip('*')  # strip any pointer stars from the actual name
+    arguments = after.rstrip(');').split(',')
+
+    for arg in arguments:
+        # strip pointer stars and square brackets from arguments
+        arg = arg.split(' ')[-1].lstrip('**').rstrip('[]')
+        if not arg == 'void':
+            args.append(arg)
+    return return_type, name, args
+
+
     # extract return type, function name and arguments portion
     ret_func_name, partial_args = prototype.split('(', maxsplit=1)
     ret_val, func = ret_func_name.split(' ')
