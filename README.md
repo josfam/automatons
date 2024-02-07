@@ -8,11 +8,48 @@ A growing (🤞) collection of short (🤞) scripts that help me automate the bo
 
 Generates common templates of a C file.
 
+```sh
+$ ,cfile --help
+usage: ,cfile [-h] [-p PROTOTYPE] [-b] [-e] [-d DESC] [--header HEADER] [--args | --void] file
+
+positional arguments:
+  file                  The c file to create
+
+options:
+  -h, --help            show this help message and exit
+  -p PROTOTYPE, --prototype PROTOTYPE
+                        Adds a function prototype to the c file
+  -b, --betty           Runs the ALX SE betty style checker on the c file
+  -e, --edit            Opens the file in vim text editor
+  -d DESC, --desc DESC  Adds a description of the function prototype
+  --header HEADER       The header file to include in the c file
+  --args                Adds a standard argv, argc prototype of main
+  --void                Adds a standard void prototype of main
+```
+
 ---
 
 ### ,compile
 
 Compiles and runs a c file.
+
+```sh
+$ ,compile --help
+usage: ,compile [-h] [-s] [-r] [-v] [--opts OPTS [OPTS ...]] [--dir DIR] [--out OUT] files [files ...]
+
+positional arguments:
+  files                 The C file/files to compile
+
+options:
+  -h, --help            show this help message and exit
+  -s, --strict          Compiles with strict compiler flags
+  -r, --run             Runs the program
+  -v, --val             Runs the program inside a valgrind environment
+  --opts OPTS [OPTS ...]
+                        Commandline options to add to the running program
+  --dir DIR             Runs the program on each file in the provided directory
+  --out OUT             The name of the output file after compilation
+```
 
 ---
 
@@ -33,11 +70,39 @@ while testing with pytest.
 
 Downloads and renames a file with `wget` in one go.
 
+```sh
+$ ,get --help
+usage: ,get [-h] [-r RENAME] url
+
+positional arguments:
+  url                   The url of the file to download
+
+options:
+  -h, --help            show this help message and exit
+  -r RENAME, --rename RENAME
+                        The new name of the newly downloaded file
+```
+
 ---
 
 ### ,header
 
 Creates and appends content to a c-type header file.
+
+```py
+$ ,header --help
+usage: ,header [-h] [-p PROTO] [-d DESC] [-n] file
+
+positional arguments:
+  file                  The name of the header file
+
+options:
+  -h, --help            show this help message and exit
+  -p PROTO, --proto PROTO
+                        The function prototype to add to the header file
+  -d DESC, --desc DESC  The description to add to the function prototype
+  -n, --new             Creates a new header file
+```
 
 ---
 
@@ -45,11 +110,33 @@ Creates and appends content to a c-type header file.
 
 Adds a file to a `.gitignore` file.
 
+```sh
+$ ,ignore --help
+usage: ,ignore [-h] file [file ...]
+
+positional arguments:
+  file        The file to add to the .gitignore file
+
+options:
+  -h, --help  show this help message and exit
+```
+
 ---
 
 ### ,mkexec
 
 Makes a file executable.
+
+```sh
+$ ,mkexec --help
+usage: ,mkexec [-h] file
+
+positional arguments:
+  file        The file to make executable
+
+options:
+  -h, --help  show this help message and exit
+```
 
 ---
 
@@ -57,11 +144,37 @@ Makes a file executable.
 
 Plays an asciinema generated .cast file.
 
+```sh
+$ ,play --help
+usage: ,play [-h] file
+
+positional arguments:
+  file        The name of the asciinema file to play
+
+options:
+  -h, --help  show this help message and exit
+```
+
 ---
 
 ### ,pyscript
 
 Creates an executable python script.
+
+```sh
+$ ,pyscript --help
+usage: ,pyscript [-h] [--main] [-i] [--env] [--fn FN] file
+
+positional arguments:
+  file          The name of the script file to create
+
+options:
+  -h, --help    show this help message and exit
+  --main        Adds the if __name__=='__main__' line
+  -i, --ignore  Adds this script to a .gitignore file in the same directory
+  --env         Adds a shebang line that uses /usr/bin/env python3 instead of /usr/bin/python3
+  --fn FN       Function prototype to add to the python file
+```
 
 ---
 
