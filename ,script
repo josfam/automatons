@@ -1,0 +1,92 @@
+#!/usr/bin/env python3
+
+"""Creates an executable python script with a pre-filled shebang line and
+optional `name == '__main__'` line.
+"""
+
+import argparse
+import subprocess
+import sys
+from pathlib import Path
+from textwrap import dedent
+
+parser = argparse.ArgumentParser()
+parser.add_argument('file', help='The name of the script file to create')
+parser.add_argument('lang', choices=['py', 'sh'], 
+                    help='The language in which the script will be written')
+parser.add_argument('--main', action='store_true',
+                    help="Adds the if __name__=='__main__' line")
+parser.add_argument('-i', '--ignore', action='store_true',
+                    help='Adds this script to a .gitignore file in the same directory')
+parser.add_argument('--env', action='store_true',
+                    help='Adds a shebang line that uses /usr/bin/env python3 instead\
+                    of /usr/bin/python3')
+parser.add_argument('--fn', help='Function prototype to add to the python file')
+args = parser.parse_args()
+
+file = args.file
+ignore = args.ignore
+lang= args.lang
+
+def main():
+    # Don't overwrite files unless stated
+    if Path('.', file).exists():
+        overwrite = input(f'`{file}` already exists!\nOverwrite? (y/n): ')
+        if overwrite.strip().startswith('n'):
+            sys.exit('Okay. No files were changed! Bye!')
+
+    if lang == 'sh':
+        create_bash_script()
+        print(f'{file} created successfully!')
+        sys.exit(0)
+    elif lang == 'py':
+        create_python_script()
+    else:
+        create_python_script()
+
+def add_to_gitignore():
+    subprocess.run(f'echo {file} >> .gitignore', shell=True)
+    ignore_message = '\nand added to .gitignore.'
+    print(f'`{file}` created successfully!{ignore_message}')
+
+def create_python_script():
+        fn = str(args.fn) if args.fn else ''
+        shebang = '#!/usr/bin/env python3' if args.env else '#!/usr/bin/python3'
+        ellipsis_line = """..."""
+
+        if fn:
+            brackets = '()' if '(' not in fn else ''
+            # strip def and ending :
+            fn = fn.lstrip('def').rstrip(':').strip()
+
+            fn = dedent(f"""    
+            def {fn}{brackets}:
+                {ellipsis_line}
+            """).strip()
+
+        name_line = """if __name__ == '__main__':
+            pass
+        """.strip() if args.main else ''
+
+        content = f"""
+        {shebang}
+
+        {fn}
+        {name_line}
+        """.strip()
+
+        command = f"""touch {file} \
+            && echo "{content}" > {file} \
+            && sudo chmod +x {file}
+        """
+
+        subprocess.run(command, shell=True)
+
+def create_bash_script():
+    content = """#!/usr/bin/env bash"""
+    with open(file, 'w', encoding='utf-8') as f:
+        f.write(content)
+        f.write("\n\n")
+
+if __name__ == '__main__':
+    main()
