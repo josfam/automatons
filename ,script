@@ -38,13 +38,12 @@ def main():
 
     if lang == 'sh':
         create_bash_script()
-        print(f'{file} created successfully!')
-        sys.exit(0)
     elif lang == 'py':
         create_python_script()
     else:
         create_python_script()
     # make file executable
+    print(f'{file} created successfully!')
     os.chmod(file, S_IXUSR)
 
 def add_to_gitignore():
