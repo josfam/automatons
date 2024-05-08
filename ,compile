@@ -35,10 +35,17 @@ val =  valgrind_flags if args.val else ''
 outfile = f'{args.out}' if args.out else "a.out"
 cmd_args = ' '.join(args.opts) if args.opts else ''
 dir_given = args.dir if args.dir else None
-libs = ' '.join([f'-l{lib}' for lib in list(args.libs)]) if args.libs else ''
+libs = [
+    f'-l{lib}'
+    for lib in [
+        letters for letters in args.libs[0]
+        ]
+    ]
+
+links = ' '.join(libs) if args.libs else ''
 
 def main():
-    compilation = f"""gcc {strict} {files} {libs} -o {outfile}"""
+    compilation = f"""gcc {strict} {files} {links} -o {outfile}"""
     running = f"""{val} ./{outfile} {cmd_args}"""
 
     subprocess.run(compilation, shell=True)
