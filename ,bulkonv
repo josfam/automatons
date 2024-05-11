@@ -1,0 +1,28 @@
+#!/usr/bin/env python3
+
+"""Bulk converts (with ffmpeg) all files with one extension into files with
+another extension"""
+
+import sys
+import os
+import subprocess
+from pathlib import Path
+
+if len(sys.argv) != 3:
+    print('Usage: ,bulkonv <source extension> <destination extension')
+    sys.exit(1)
+
+cwd = Path(os.getcwd())
+source_ext = sys.argv[1]
+dest_ext = sys.argv[2]
+
+files = set(
+    file.name
+    for file in Path.iterdir(cwd)
+    if file.name.endswith(f'.{source_ext}')
+)
+
+for file in files:
+    subprocess.run(
+        ['ffmpeg', '-i', f'{file}', f'{file.rstrip(source_ext)}.{dest_ext}']
+    )
